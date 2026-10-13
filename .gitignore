@@ -1,0 +1,18 @@
+# Build output
+dist/
+
+# Compiler debug info written next to compiled scripts
+*.ndb
+
+# Python
+__pycache__/
+
+# Editors / OS
+.vs/
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+
+# Local notes (Nexus drafts etc.)
+docs/local/
