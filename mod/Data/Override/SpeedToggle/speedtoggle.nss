@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------------------------------
-// speedtoggle.nss - steps Geralt's movement speed preset up (wraps to Normal after +70%).
+// speedtoggle.nss - steps Geralt's movement speed preset up (wraps to Normal after +90%).
 // Bound to a hotkey by System\Scripts\testtools.lua (default: V).
 //------------------------------------------------------------------------------------------------------------------------
 

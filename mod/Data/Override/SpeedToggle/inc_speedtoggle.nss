@@ -1,10 +1,10 @@
 //------------------------------------------------------------------------------------------------------------------------
 // inc_speedtoggle.nss - shared logic for speedtoggle (step up) and speedtoggle_down (step down).
-// Presets: Normal -> +15% -> +30% -> +50% -> +70%, wrapping around at both ends.
+// Presets: Normal -> +15% -> +30% -> +50% -> +70% -> +90%, wrapping around at both ends.
 //------------------------------------------------------------------------------------------------------------------------
 
 const string SPEEDTOGGLE_VAR = "MOD_SPEEDTOGGLE_LEVEL";
-const int SPEEDTOGGLE_LEVELS = 5;
+const int SPEEDTOGGLE_LEVELS = 6;
 
 // Movement speed bonus (percent) for each preset level.
 int GetPresetPercent(int nLevel)
@@ -13,6 +13,7 @@ int GetPresetPercent(int nLevel)
     if (nLevel == 2) return 30;
     if (nLevel == 3) return 50;
     if (nLevel == 4) return 70;
+    if (nLevel == 5) return 90;
     return 0;
 }
 

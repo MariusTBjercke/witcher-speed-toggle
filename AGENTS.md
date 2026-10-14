@@ -11,13 +11,14 @@ A mod for The Witcher: Enhanced Edition 1.5 (Aurora engine, 32-bit, Lua 5.0 UI a
 | `mod/` | Mirrors the game folder. Copy its contents into the game folder to install. |
 | `mod/Data/Override/SpeedToggle/inc_speedtoggle.nss` | All logic and the preset table (`GetPresetPercent`, `SPEEDTOGGLE_LEVELS`) |
 | `mod/Data/Override/SpeedToggle/speedtoggle.nss`, `speedtoggle_down.nss` | Entry points: `StepSpeedPreset(+1/-1)` |
-| `mod/Data/Override/SpeedToggle/*.ncs` | **Compiled** scripts. They are committed because compiling needs the game, so keep them in sync with the `.nss`. |
+| `mod/Data/Override/SpeedToggle/*.ncs` | **Compiled** scripts. They are committed, so keep them in sync with the `.nss`. Preset changes are rebuilt by `tools/build_speedtoggle_ncs.py`, anything else needs the game's compiler. |
 | `mod/System/Scripts/testtools.lua` | **Shared loader**, byte-identical in witcher-quick-loot. It defines `ModHooks_BindScripts` / `ModHooks_EnableConsole` and runs each known hook file that exists |
 | `mod/System/Scripts/speedtoggle_hook.lua` | This mod's settings (keys, console); calls the loader's helpers |
 | `optional/VanillaSpeedWithRandomFix/creaturespeed.2da` | Vanilla speed with `RANDOMDEV 0` on the `Normal` row, for Mersey and faster-movement users |
 | `docs/README.txt` | The README shipped in the zip, renamed README_WitcherSpeedToggle.txt so it cannot clash with sibling mods |
 | `docs/local/` | Git-ignored local notes, for example `nexus.md` (Nexus page and file drafts that follow the conventions of the owner's Liberty Loadout page) |
 | `tools/package-release.ps1` | Builds `dist/WitcherSpeedToggle-<version>.zip` (version from `CHANGELOG.md`) |
+| `tools/build_speedtoggle_ncs.py` | Rewrites the preset table in both `.ncs` from `inc_speedtoggle.nss`, without the game. It regenerates `GetPresetPercent` (the last function, one 60-byte block per `if`) and the two `CONST int` in `% SPEEDTOGGLE_LEVELS`, in the compiler's own layout. `--check` only verifies |
 | `tools/luac50dis.py` | Minimal Lua 5.0 bytecode disassembler for the game's `.luc` files |
 | `tools/WitcherDebugMode.ps1` | Reads and sets `m_nDebugMode` in the running game (debugging aid) |
 
@@ -25,7 +26,8 @@ The version lives in `CHANGELOG.md` (`## x.y.z`). Tag releases `vX.Y.Z`.
 
 ## Build, test, release
 
-- **Compile** (needs the game). Set `ENABLE_CONSOLE = true` in the installed `speedtoggle_hook.lua`, start the game, type `` ` ``, then run
+- **Preset changes** (`SPEEDTOGGLE_LEVELS` and the `if (nLevel == N) return P;` lines; keep them in order and keep `return 0;` last): `python -I tools\build_speedtoggle_ncs.py`. No game needed. Fed the 1.1.0 `.nss`, it reproduces the 1.1.0 `.ncs` byte for byte.
+- **Compile** (any other change, needs the game). Set `ENABLE_CONSOLE = true` in the installed `speedtoggle_hook.lua`, start the game, type `` ` ``, then run
   `compile ..\Data\Override\SpeedToggle\speedtoggle.nss` (and the same for `speedtoggle_down.nss`).
   The path is relative to the game's `System\` folder. It must include `.nss`, because the compiler strips the last 4 characters. The `.ncs` file is written next to the source, together with a `.ndb` debug file that you should not commit. **Restart the game** to pick up a recompiled `.ncs`.
 - **Test** in game: V and B cycle presets, and the feedback line shows `Speed: …`. The speed must survive save/load and area transitions. Test with `ENABLE_CONSOLE = false` and with no `System\keybinding.ini`, so the bindings are proven to come from Lua.

@@ -7,7 +7,7 @@ Hotkey movement-speed presets for **The Witcher: Enhanced Edition**. Switch Gera
 | `V` | Next speed preset |
 | `B` | Previous speed preset |
 
-Presets: **Normal → +15% → +30% → +50% → +70%**. They wrap around in both directions.
+Presets: **Normal → +15% → +30% → +50% → +70% → +90%**. They wrap around in both directions.
 
 - The active preset is shown in the game's feedback line (`Speed: +30%`).
 - The preset is stored in your save game and persists through area transitions and save/load.

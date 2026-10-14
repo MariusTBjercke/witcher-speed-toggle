@@ -8,7 +8,7 @@ no AutoHotkey, no trainer. Everything runs inside the game's own script engine.
   V  ->  next speed preset
   B  ->  previous speed preset
 
-Presets:  Normal -> +15% -> +30% -> +50% -> +70%  (wraps around)
+Presets:  Normal -> +15% -> +30% -> +50% -> +70% -> +90%  (wraps around)
 
 The active preset is shown in the game's feedback line ("Speed: +30%"), is stored
 in your save game and persists through area transitions and save/load.
