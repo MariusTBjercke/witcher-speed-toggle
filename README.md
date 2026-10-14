@@ -85,6 +85,8 @@ The presets live in `inc_speedtoggle.nss` (`GetPresetPercent` and `SPEEDTOGGLE_L
    ```
 4. Restart the game to load the new scripts.
 
+From a clone of this repository you can skip the game: after editing the presets in `mod\Data\Override\SpeedToggle\inc_speedtoggle.nss`, run `python -I tools\build_speedtoggle_ncs.py` to rebuild both `.ncs` files, then copy the folder into the game.
+
 ## Uninstall
 
 1. In game, cycle back to `Speed: Normal` before saving. Otherwise the speed bonus stays on the character in that save.

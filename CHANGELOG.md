@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0
+
+- New top preset: +90%. V / B now step through Normal, +15%, +30%, +50%, +70% and +90%.
+- `tools/build_speedtoggle_ncs.py` rebuilds the compiled scripts from the preset table in `inc_speedtoggle.nss`, so changing the presets no longer needs the game's console.
+
 ## 1.1.0
 
 - Settings moved to `System\Scripts\speedtoggle_hook.lua`. `testtools.lua` is now a shared loader, identical in Witcher Quick Loot, so the two mods can be installed in any order.
