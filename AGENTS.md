@@ -12,9 +12,10 @@ A mod for The Witcher: Enhanced Edition 1.5 (Aurora engine, 32-bit, Lua 5.0 UI a
 | `mod/Data/Override/SpeedToggle/inc_speedtoggle.nss` | All logic and the preset table (`GetPresetPercent`, `SPEEDTOGGLE_LEVELS`) |
 | `mod/Data/Override/SpeedToggle/speedtoggle.nss`, `speedtoggle_down.nss` | Entry points: `StepSpeedPreset(+1/-1)` |
 | `mod/Data/Override/SpeedToggle/*.ncs` | **Compiled** scripts. They are committed because compiling needs the game, so keep them in sync with the `.nss`. |
-| `mod/System/Scripts/testtools.lua` | Startup hook that binds the hotkeys and can optionally enable the console |
+| `mod/System/Scripts/testtools.lua` | **Shared loader**, byte-identical in witcher-quick-loot. It defines `ModHooks_BindScripts` / `ModHooks_EnableConsole` and runs each known hook file that exists |
+| `mod/System/Scripts/speedtoggle_hook.lua` | This mod's settings (keys, console); calls the loader's helpers |
 | `optional/VanillaSpeedWithRandomFix/creaturespeed.2da` | Vanilla speed with `RANDOMDEV 0` on the `Normal` row, for Mersey and faster-movement users |
-| `docs/README.txt` | The README shipped in the zip |
+| `docs/README.txt` | The README shipped in the zip, renamed README_WitcherSpeedToggle.txt so it cannot clash with sibling mods |
 | `docs/local/` | Git-ignored local notes, for example `nexus.md` (Nexus page and file drafts that follow the conventions of the owner's Liberty Loadout page) |
 | `tools/package-release.ps1` | Builds `dist/WitcherSpeedToggle-<version>.zip` (version from `CHANGELOG.md`) |
 | `tools/luac50dis.py` | Minimal Lua 5.0 bytecode disassembler for the game's `.luc` files |
@@ -24,7 +25,7 @@ The version lives in `CHANGELOG.md` (`## x.y.z`). Tag releases `vX.Y.Z`.
 
 ## Build, test, release
 
-- **Compile** (needs the game). Set `ENABLE_CONSOLE = true` in the installed `testtools.lua`, start the game, type `` ` ``, then run
+- **Compile** (needs the game). Set `ENABLE_CONSOLE = true` in the installed `speedtoggle_hook.lua`, start the game, type `` ` ``, then run
   `compile ..\Data\Override\SpeedToggle\speedtoggle.nss` (and the same for `speedtoggle_down.nss`).
   The path is relative to the game's `System\` folder. It must include `.nss`, because the compiler strips the last 4 characters. The `.ncs` file is written next to the source, together with a `.ndb` debug file that you should not commit. **Restart the game** to pick up a recompiled `.ncs`.
 - **Test** in game: V and B cycle presets, and the feedback line shows `Speed: …`. The speed must survive save/load and area transitions. Test with `ENABLE_CONSOLE = false` and with no `System\keybinding.ini`, so the bindings are proven to come from Lua.
@@ -55,6 +56,8 @@ Analysis used a Steamless-unpacked copy of `witcher.exe` in Ghidra. The addresse
 
 ## Pitfalls
 
+- `mod/System/Scripts/testtools.lua` must stay **byte-identical** with the copy in `witcher-quick-loot`. The game's Lua cannot list a folder, so the loader names every hook in `HOOKS`. A new mod that uses the loader adds its hook name there; then bump the "loader version" comment and release every mod that ships the loader.
+- In a hook's settings, `false` unbinds a key. `nil` drops the entry from the table, so a previous binding is never cleaned up.
 - A resref can be at most 16 characters. `speedtoggle_down` is exactly 16.
 - `OVERRIDE=..\Data` in `System\witcher.ini` makes the whole `Data` tree an override, so loose files anywhere under `Data` are loaded. Don't leave stale copies of the `.ncs` elsewhere under `Data`.
 - Edits to the `.nss` do nothing until the file is recompiled **and** the game is restarted.

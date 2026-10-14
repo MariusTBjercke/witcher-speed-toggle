@@ -23,15 +23,16 @@ INSTALLATION
 
 Files installed:
   Data\Override\SpeedToggle\   compiled scripts (.ncs) + their source (.nss)
-  System\Scripts\testtools.lua  startup hook that binds the hotkeys
+  System\Scripts\speedtoggle_hook.lua  settings (hotkeys, console)
+  System\Scripts\testtools.lua         shared startup loader (see COMPATIBILITY)
 
 
 CONFIGURATION
 -------------
-Open System\Scripts\testtools.lua in a text editor:
+Open System\Scripts\speedtoggle_hook.lua in a text editor:
 
   local SPEED_UP_KEY = "V"      -- one engine key name, see below
-  local SPEED_DOWN_KEY = "B"    -- set to nil to leave it unbound
+  local SPEED_DOWN_KEY = "B"    -- set to false to leave it unbound
 
 When you change a key, the old key is unbound automatically on the next launch.
 
@@ -76,7 +77,7 @@ The preset values live in Data\Override\SpeedToggle\inc_speedtoggle.nss
 (GetPresetPercent and SPEEDTOGGLE_LEVELS; the engine accepts 0-99%).
 After editing, recompile in the game's developer console:
 
-1. In testtools.lua set:  local ENABLE_CONSOLE = true   and start the game.
+1. In speedtoggle_hook.lua set:  local ENABLE_CONSOLE = true   and start the game.
 2. Open the console by typing the ` character
    (on keyboards where ` is a dead key, press it and then Space).
 3. Run:
@@ -89,14 +90,18 @@ UNINSTALL
 ---------
 1. In game, cycle back to "Speed: Normal" before saving (otherwise the speed bonus
    stays on the character in that save).
-2. Delete Data\Override\SpeedToggle and System\Scripts\testtools.lua.
+2. Delete Data\Override\SpeedToggle and System\Scripts\speedtoggle_hook.lua.
+   Also delete System\Scripts\testtools.lua, unless Witcher Quick Loot is installed
+   (it uses the same file).
 3. Optionally delete System\keybinding.ini (the engine's saved key macros).
 
 
 COMPATIBILITY / NOTES
 ---------------------
-- Uses System\Scripts\testtools.lua, a file the retail game loads on startup but does
-  not ship. Another mod using the same file would conflict - merge the two by hand.
+- System\Scripts\testtools.lua is a shared loader: the retail game runs it on startup
+  but does not ship it. Witcher Quick Loot ships the identical file, so the two mods
+  can be installed in any order. A mod from another author that replaces testtools.lua
+  would break the hotkeys - merge the two files by hand.
 - The speed bonus is a "supernatural" movement-speed effect that only this mod adds
   and removes; speed changes applied by the game itself are left alone.
 - Above roughly +50% the running animation visibly speeds up as well.
@@ -105,7 +110,8 @@ COMPATIBILITY / NOTES
 HOW IT WORKS
 ------------
 The game's startup Lua script calls PlayFile("testtools"), which is missing in the
-retail release. This mod provides it and uses the engine's built-in "bindkey" console
+retail release. This mod provides it as a small shared loader that runs
+speedtoggle_hook.lua, which uses the engine's built-in "bindkey" console
 command to bind the hotkeys to "runscript speedtoggle" / "runscript speedtoggle_down".
 The NWScripts apply EffectMovementSpeedIncrease to the player and show the preset via
 g_GuiInGame:ShowGameInfo.

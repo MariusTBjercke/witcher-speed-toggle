@@ -1,5 +1,5 @@
 # Builds dist\WitcherSpeedToggle-<version>.zip, laid out to extract straight into the game folder
-# (Data\, System\, Optional\, README.txt). Entries use "/" separators so the zip also
+# (Data\, System\, Optional\, README_WitcherSpeedToggle.txt). Entries use "/" separators so the zip also
 # extracts correctly outside Windows (PowerShell 5.1's ZipFile writes "\").
 param([string]$Version = "")
 
@@ -13,7 +13,7 @@ if (-not $Version) {
 
 # Published path in the zip -> source path in the repo.
 $sources = [ordered]@{
-    "README.txt" = "docs\README.txt"
+    "README_WitcherSpeedToggle.txt" = "docs\README.txt"
     "Data"       = "mod\Data"
     "System"     = "mod\System"
     "Optional"   = "optional"

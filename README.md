@@ -29,15 +29,16 @@ Files installed:
 | Path | Purpose |
 |---|---|
 | `Data\Override\SpeedToggle\` | Compiled scripts (`.ncs`) and their source (`.nss`) |
-| `System\Scripts\testtools.lua` | Startup hook that binds the hotkeys |
+| `System\Scripts\speedtoggle_hook.lua` | Settings: hotkeys and console |
+| `System\Scripts\testtools.lua` | Shared startup loader (see [Compatibility](#compatibility)) |
 
 ## Configuration
 
-Edit `System\Scripts\testtools.lua`:
+Edit `System\Scripts\speedtoggle_hook.lua`:
 
 ```lua
 local SPEED_UP_KEY = "V"      -- one engine key name, see below
-local SPEED_DOWN_KEY = "B"    -- set to nil to leave it unbound
+local SPEED_DOWN_KEY = "B"    -- set to false to leave it unbound
 local ENABLE_CONSOLE = false  -- true enables the developer console (` character)
 ```
 
@@ -75,7 +76,7 @@ To make "Normal" true vanilla speed, use `Optional\VanillaSpeedWithRandomFix\cre
 
 The presets live in `inc_speedtoggle.nss` (`GetPresetPercent` and `SPEEDTOGGLE_LEVELS`). The engine accepts 0–99%. To recompile, use the game's built-in compiler:
 
-1. Set `ENABLE_CONSOLE = true` in `testtools.lua` and start the game.
+1. Set `ENABLE_CONSOLE = true` in `speedtoggle_hook.lua` and start the game.
 2. Open the console by typing the `` ` `` character. On keyboards where `` ` `` is a dead key, press it and then Space.
 3. Run:
    ```
@@ -87,17 +88,17 @@ The presets live in `inc_speedtoggle.nss` (`GetPresetPercent` and `SPEEDTOGGLE_L
 ## Uninstall
 
 1. In game, cycle back to `Speed: Normal` before saving. Otherwise the speed bonus stays on the character in that save.
-2. Delete `Data\Override\SpeedToggle` and `System\Scripts\testtools.lua`.
+2. Delete `Data\Override\SpeedToggle` and `System\Scripts\speedtoggle_hook.lua`. Also delete `System\Scripts\testtools.lua`, unless [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) is installed, because it uses the same file.
 3. Optionally delete `System\keybinding.ini`, which holds the engine's saved key macros.
 
 ## Compatibility
 
-- The mod uses `System\Scripts\testtools.lua`, a file the game loads on startup but does not ship. Another mod that uses the same file would conflict, so merge the two by hand.
+- `System\Scripts\testtools.lua` is a shared loader. It is the only Lua file the game runs on startup that the retail release does not ship. [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) ships the identical file, so the two mods can be installed in any order. A mod from another author that replaces `testtools.lua` would break the hotkeys; merge the two files by hand.
 - Above roughly +50%, the running animation visibly speeds up as well.
 
 ## How it works
 
-The game's startup Lua script (`startup.luc`) calls `g_Lua:PlayFile("testtools")`, but the retail release has no such file. This mod provides it and calls the engine's built-in `bindkey` console command to bind the hotkeys to `runscript speedtoggle` and `runscript speedtoggle_down`. The NWScripts apply `EffectMovementSpeedIncrease` (wrapped in `SupernaturalEffect`) to the player and show the preset through `g_GuiInGame:ShowGameInfo`.
+The game's startup Lua script (`startup.luc`) calls `g_Lua:PlayFile("testtools")`, but the retail release has no such file. This mod provides it as a small shared loader, which runs `speedtoggle_hook.lua`. The hook calls the engine's built-in `bindkey` console command to bind the hotkeys to `runscript speedtoggle` and `runscript speedtoggle_down`. The NWScripts apply `EffectMovementSpeedIncrease` (wrapped in `SupernaturalEffect`) to the player and show the preset through `g_GuiInGame:ShowGameInfo`.
 
 ## Building a release
 
