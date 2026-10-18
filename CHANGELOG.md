@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+
+- Shared loader version 2: also runs Witcher Engine Fix's hook (`enginefix_hook`). `testtools.lua` is now identical in Witcher Quick Loot 1.0.2 and Witcher Engine Fix, so installing this mod after Engine Fix no longer turns off Engine Fix's load/save-menu fix.
+
 ## 1.2.0
 
 - New top preset: +90%. V / B now step through Normal, +15%, +30%, +50%, +70% and +90%.

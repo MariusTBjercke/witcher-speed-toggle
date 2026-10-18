@@ -1,11 +1,12 @@
--- Shared startup loader (loader version 1) used by Witcher Speed Toggle and Witcher Quick Loot.
--- Every one of these mods ships this exact file, so installing them in any order is safe.
+-- Shared startup loader (loader version 2) used by Witcher Speed Toggle, Witcher Quick Loot and
+-- Witcher Engine Fix. Version 2 adds enginefix_hook; hooks that are not installed are skipped, so it
+-- also works with just one of the mods. Version 1 lacks enginefix_hook, so keep this one.
 --
 -- startup.luc always loads "testtools", but the retail game ships without it, so this file runs
 -- on every launch. It runs the hook file of each installed mod (System\Scripts\<name>.lua).
 -- Settings live in those hook files, not here.
 
-local HOOKS = { "speedtoggle_hook", "quickloot_hook" }
+local HOOKS = { "speedtoggle_hook", "quickloot_hook", "enginefix_hook" }
 
 -- Binds each script in tScripts ({ scriptname = "KEY" or false }) to its key with the engine's
 -- bindkey command. The engine saves every binding to System\keybinding.ini and reloads it on

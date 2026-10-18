@@ -12,7 +12,7 @@ A mod for The Witcher: Enhanced Edition 1.5 (Aurora engine, 32-bit, Lua 5.0 UI a
 | `mod/Data/Override/SpeedToggle/inc_speedtoggle.nss` | All logic and the preset table (`GetPresetPercent`, `SPEEDTOGGLE_LEVELS`) |
 | `mod/Data/Override/SpeedToggle/speedtoggle.nss`, `speedtoggle_down.nss` | Entry points: `StepSpeedPreset(+1/-1)` |
 | `mod/Data/Override/SpeedToggle/*.ncs` | **Compiled** scripts. They are committed, so keep them in sync with the `.nss`. Preset changes are rebuilt by `tools/build_speedtoggle_ncs.py`, anything else needs the game's compiler. |
-| `mod/System/Scripts/testtools.lua` | **Shared loader**, byte-identical in witcher-quick-loot. It defines `ModHooks_BindScripts` / `ModHooks_EnableConsole` and runs each known hook file that exists |
+| `mod/System/Scripts/testtools.lua` | **Shared loader** (loader version 2), byte-identical in witcher-quick-loot and witcher-enginefix. It defines `ModHooks_BindScripts` / `ModHooks_EnableConsole` and runs each known hook file that exists |
 | `mod/System/Scripts/speedtoggle_hook.lua` | This mod's settings (keys, console); calls the loader's helpers |
 | `optional/VanillaSpeedWithRandomFix/creaturespeed.2da` | Vanilla speed with `RANDOMDEV 0` on the `Normal` row, for Mersey and faster-movement users |
 | `docs/README.txt` | The README shipped in the zip, renamed README_WitcherSpeedToggle.txt so it cannot clash with sibling mods |
@@ -58,7 +58,7 @@ Analysis used a Steamless-unpacked copy of `witcher.exe` in Ghidra. The addresse
 
 ## Pitfalls
 
-- `mod/System/Scripts/testtools.lua` must stay **byte-identical** with the copy in `witcher-quick-loot`. The game's Lua cannot list a folder, so the loader names every hook in `HOOKS`. A new mod that uses the loader adds its hook name there; then bump the "loader version" comment and release every mod that ships the loader.
+- `mod/System/Scripts/testtools.lua` must stay **byte-identical** with the copies in `witcher-quick-loot` and `witcher-enginefix` ([Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix), hook `enginefix_hook`). The game's Lua cannot list a folder, so the loader names every hook in `HOOKS`. A new mod that uses the loader adds its hook name there; then bump the "loader version" comment and release every mod that ships the loader.
 - In a hook's settings, `false` unbinds a key. `nil` drops the entry from the table, so a previous binding is never cleaned up.
 - A resref can be at most 16 characters. `speedtoggle_down` is exactly 16.
 - `OVERRIDE=..\Data` in `System\witcher.ini` makes the whole `Data` tree an override, so loose files anywhere under `Data` are loaded. Don't leave stale copies of the `.ncs` elsewhere under `Data`.

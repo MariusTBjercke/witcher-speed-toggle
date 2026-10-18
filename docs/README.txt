@@ -91,17 +91,21 @@ UNINSTALL
 1. In game, cycle back to "Speed: Normal" before saving (otherwise the speed bonus
    stays on the character in that save).
 2. Delete Data\Override\SpeedToggle and System\Scripts\speedtoggle_hook.lua.
-   Also delete System\Scripts\testtools.lua, unless Witcher Quick Loot is installed
-   (it uses the same file).
+   Also delete System\Scripts\testtools.lua, unless Witcher Quick Loot or Witcher
+   Engine Fix is installed (they use the same file).
 3. Optionally delete System\keybinding.ini (the engine's saved key macros).
 
 
 COMPATIBILITY / NOTES
 ---------------------
 - System\Scripts\testtools.lua is a shared loader: the retail game runs it on startup
-  but does not ship it. Witcher Quick Loot ships the identical file, so the two mods
-  can be installed in any order. A mod from another author that replaces testtools.lua
-  would break the hotkeys - merge the two files by hand.
+  but does not ship it. Witcher Quick Loot 1.0.2+ and Witcher Engine Fix
+  (https://github.com/MariusTBjercke/witcher-enginefix) ship the identical file
+  (loader version 2), so the mods can be installed in any order. Speed Toggle 1.2.0
+  and older and Quick Loot 1.0.1 and older ship loader version 1, which does not run
+  Engine Fix's hook - installing one of them after Engine Fix turns off its
+  load/save-menu fix, so update them. A mod from another author that replaces
+  testtools.lua would break the hotkeys - merge the two files by hand.
 - The speed bonus is a "supernatural" movement-speed effect that only this mod adds
   and removes; speed changes applied by the game itself are left alone.
 - Above roughly +50% the running animation visibly speeds up as well.

@@ -90,12 +90,12 @@ From a clone of this repository you can skip the game: after editing the presets
 ## Uninstall
 
 1. In game, cycle back to `Speed: Normal` before saving. Otherwise the speed bonus stays on the character in that save.
-2. Delete `Data\Override\SpeedToggle` and `System\Scripts\speedtoggle_hook.lua`. Also delete `System\Scripts\testtools.lua`, unless [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) is installed, because it uses the same file.
+2. Delete `Data\Override\SpeedToggle` and `System\Scripts\speedtoggle_hook.lua`. Also delete `System\Scripts\testtools.lua`, unless [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) or [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) is installed, because they use the same file.
 3. Optionally delete `System\keybinding.ini`, which holds the engine's saved key macros.
 
 ## Compatibility
 
-- `System\Scripts\testtools.lua` is a shared loader. It is the only Lua file the game runs on startup that the retail release does not ship. [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) ships the identical file, so the two mods can be installed in any order. A mod from another author that replaces `testtools.lua` would break the hotkeys; merge the two files by hand.
+- `System\Scripts\testtools.lua` is a shared loader. It is the only Lua file the game runs on startup that the retail release does not ship. [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) (1.0.2 or newer) and [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) ship the identical file (loader version 2), so the mods can be installed in any order. Speed Toggle 1.2.0 and older and Quick Loot 1.0.1 and older ship loader version 1, which does not run Engine Fix's hook: installing one of them after Engine Fix turns off its load/save-menu fix, so update them. A mod from another author that replaces `testtools.lua` would break the hotkeys; merge the two files by hand.
 - Above roughly +50%, the running animation visibly speeds up as well.
 
 ## How it works
