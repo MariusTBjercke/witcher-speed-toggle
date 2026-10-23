@@ -93,9 +93,20 @@ From a clone of this repository you can skip the game: after editing the presets
 2. Delete `Data\Override\SpeedToggle` and `System\Scripts\speedtoggle_hook.lua`. Also delete `System\Scripts\testtools.lua`, unless [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) or [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) is installed, because they use the same file.
 3. Optionally delete `System\keybinding.ini`, which holds the engine's saved key macros.
 
+## Known issue: hotkeys stop after Alt+Tab in full screen
+
+Without DXVK, in exclusive full screen ("Full screen" ticked in Options > Graphics), the game rebuilds its input handling when it loses focus (Alt+Tab, the Windows key, clicking another window) and forgets every key bound with `bindkey`. V and B then do nothing until the next launch. Workarounds:
+
+- Untick "Full screen" (windowed or borderless window).
+- Use [DXVK](https://github.com/doitsujin/dxvk) (its 32-bit `d3d9.dll` next to `witcher.exe`), which avoids the rebuild.
+- After coming back, untick and tick "Full screen" again in the options: changing it rebinds the hotkeys.
+- With the console enabled, type `bindkey V runscript speedtoggle` (and `bindkey B runscript speedtoggle_down`) after coming back.
+
+Changing "Full screen" or the resolution in the options is handled automatically (loader version 3).
+
 ## Compatibility
 
-- `System\Scripts\testtools.lua` is a shared loader. It is the only Lua file the game runs on startup that the retail release does not ship. [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) (1.0.2 or newer) and [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) ship the identical file (loader version 2), so the mods can be installed in any order. Speed Toggle 1.2.0 and older and Quick Loot 1.0.1 and older ship loader version 1, which does not run Engine Fix's hook: installing one of them after Engine Fix turns off its load/save-menu fix, so update them. A mod from another author that replaces `testtools.lua` would break the hotkeys; merge the two files by hand.
+- `System\Scripts\testtools.lua` is a shared loader. It is the only Lua file the game runs on startup that the retail release does not ship. [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) (1.0.2 or newer) and [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) ship the identical file, so the mods can be installed in any order. Keep the newest one (loader version 3, Speed Toggle 1.2.2): version 2 does not rebind the hotkeys after a video mode change, and version 1 (Speed Toggle 1.2.0 and older, Quick Loot 1.0.1 and older) also does not run Engine Fix's hook, which turns off its load/save-menu fix. A mod from another author that replaces `testtools.lua` would break the hotkeys; merge the two files by hand.
 - Above roughly +50%, the running animation visibly speeds up as well.
 
 ## How it works

@@ -96,16 +96,32 @@ UNINSTALL
 3. Optionally delete System\keybinding.ini (the engine's saved key macros).
 
 
+KNOWN ISSUE: HOTKEYS STOP AFTER ALT+TAB IN FULL SCREEN
+------------------------------------------------------
+Without DXVK, in exclusive full screen ("Full screen" ticked in Options > Graphics),
+the game rebuilds its input handling when it loses focus (Alt+Tab, the Windows key,
+clicking another window) and forgets every key bound this way. V and B then do
+nothing until the next launch. Workarounds:
+- Untick "Full screen" (windowed or borderless window), or
+- use DXVK (its 32-bit d3d9.dll next to witcher.exe), which avoids the rebuild, or
+- after coming back, untick and tick "Full screen" again in the options (changing it
+  rebinds the hotkeys), or
+- with the console enabled, type  bindkey V runscript speedtoggle  (and the same for
+  B with speedtoggle_down) after coming back.
+Changing "Full screen" or the resolution in the options is handled automatically.
+
+
 COMPATIBILITY / NOTES
 ---------------------
 - System\Scripts\testtools.lua is a shared loader: the retail game runs it on startup
-  but does not ship it. Witcher Quick Loot 1.0.2+ and Witcher Engine Fix
-  (https://github.com/MariusTBjercke/witcher-enginefix) ship the identical file
-  (loader version 2), so the mods can be installed in any order. Speed Toggle 1.2.0
-  and older and Quick Loot 1.0.1 and older ship loader version 1, which does not run
-  Engine Fix's hook - installing one of them after Engine Fix turns off its
-  load/save-menu fix, so update them. A mod from another author that replaces
-  testtools.lua would break the hotkeys - merge the two files by hand.
+  but does not ship it. Witcher Quick Loot and Witcher Engine Fix
+  (https://github.com/MariusTBjercke/witcher-enginefix) ship the identical file, so
+  the mods can be installed in any order. Keep the newest one (loader version 3,
+  Speed Toggle 1.2.2): version 2 does not rebind the hotkeys after a video mode
+  change, and version 1 (Speed Toggle 1.2.0 and older, Quick Loot 1.0.1 and older)
+  also does not run Engine Fix's hook, which turns off its load/save-menu fix.
+  A mod from another author that replaces testtools.lua would break the hotkeys -
+  merge the two files by hand.
 - The speed bonus is a "supernatural" movement-speed effect that only this mod adds
   and removes; speed changes applied by the game itself are left alone.
 - Above roughly +50% the running animation visibly speeds up as well.
