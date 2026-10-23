@@ -21,6 +21,10 @@ INSTALLATION
    (merge with the existing folders).
 2. Start the game. That's it - the hotkeys are bound automatically on every launch.
 
+Strongly recommended: Witcher Engine Fix 0.7.2 or newer
+(https://github.com/MariusTBjercke/witcher-enginefix). It keeps the hotkeys
+working after Alt+Tab in exclusive full screen without DXVK (see below).
+
 Files installed:
   Data\Override\SpeedToggle\   compiled scripts (.ncs) + their source (.nss)
   System\Scripts\speedtoggle_hook.lua  settings (hotkeys, console)
@@ -96,12 +100,13 @@ UNINSTALL
 3. Optionally delete System\keybinding.ini (the engine's saved key macros).
 
 
-KNOWN ISSUE: HOTKEYS STOP AFTER ALT+TAB IN FULL SCREEN
-------------------------------------------------------
+HOTKEYS AFTER ALT+TAB IN FULL SCREEN
+------------------------------------
 Without DXVK, in exclusive full screen ("Full screen" ticked in Options > Graphics),
-the game rebuilds its input handling when it loses focus (Alt+Tab, the Windows key,
-clicking another window) and forgets every key bound this way. V and B then do
-nothing until the next launch. Workarounds:
+the game rebuilds its input handling when it comes back after losing focus (Alt+Tab,
+the Windows key, clicking another window) and forgets every key bound this way. V and
+B then do nothing until the next launch. Witcher Engine Fix 0.7.2 or newer binds them
+again right after, so with it installed they keep working. Without it:
 - Untick "Full screen" (windowed or borderless window), or
 - use DXVK (its 32-bit d3d9.dll next to witcher.exe), which avoids the rebuild, or
 - after coming back, untick and tick "Full screen" again in the options (changing it

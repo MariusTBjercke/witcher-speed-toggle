@@ -16,6 +16,7 @@ Presets: **Normal → +15% → +30% → +50% → +70% → +90%**. They wrap arou
 ## Requirements
 
 - The Witcher: Enhanced Edition, patch **1.5** (Steam or GOG, Director's Cut). Tested on Steam 1.5.0.1304.
+- Strongly recommended: [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) 0.7.2 or newer. Without it, Alt+Tab in exclusive full screen without DXVK makes the game forget the hotkeys until the next launch ([below](#hotkeys-after-alttab-in-full-screen-use-witcher-engine-fix)).
 
 ## Installation
 
@@ -93,20 +94,22 @@ From a clone of this repository you can skip the game: after editing the presets
 2. Delete `Data\Override\SpeedToggle` and `System\Scripts\speedtoggle_hook.lua`. Also delete `System\Scripts\testtools.lua`, unless [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) or [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) is installed, because they use the same file.
 3. Optionally delete `System\keybinding.ini`, which holds the engine's saved key macros.
 
-## Known issue: hotkeys stop after Alt+Tab in full screen
+## Hotkeys after Alt+Tab in full screen: use Witcher Engine Fix
 
-Without DXVK, in exclusive full screen ("Full screen" ticked in Options > Graphics), the game rebuilds its input handling when it loses focus (Alt+Tab, the Windows key, clicking another window) and forgets every key bound with `bindkey`. V and B then do nothing until the next launch. Workarounds:
+Without DXVK, in exclusive full screen ("Full screen" ticked in Options > Graphics), the game resets its Direct3D device when you come back after losing focus (Alt+Tab, the Windows key, clicking another window). That rebuilds its input handling with only its own keys and forgets every key bound with `bindkey`, so V and B do nothing until the next launch. No script runs at that moment, so this mod cannot fix it by itself.
 
-- Untick "Full screen" (windowed or borderless window).
+[Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) 0.7.2 or newer (fix 13) binds every line of `System\keybinding.ini` again right after that reset, so with it installed the hotkeys keep working. Without it, any of these avoids the problem:
+
+- Untick "Full screen" (windowed, or Engine Fix's borderless window).
 - Use [DXVK](https://github.com/doitsujin/dxvk) (its 32-bit `d3d9.dll` next to `witcher.exe`), which avoids the rebuild.
 - After coming back, untick and tick "Full screen" again in the options: changing it rebinds the hotkeys.
 - With the console enabled, type `bindkey V runscript speedtoggle` (and `bindkey B runscript speedtoggle_down`) after coming back.
 
-Changing "Full screen" or the resolution in the options is handled automatically (loader version 3).
+Changing "Full screen" or the resolution in the options is handled by this mod itself (loader version 3).
 
 ## Compatibility
 
-- `System\Scripts\testtools.lua` is a shared loader. It is the only Lua file the game runs on startup that the retail release does not ship. [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) (1.0.2 or newer) and [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) ship the identical file, so the mods can be installed in any order. Keep the newest one (loader version 3, Speed Toggle 1.2.2): version 2 does not rebind the hotkeys after a video mode change, and version 1 (Speed Toggle 1.2.0 and older, Quick Loot 1.0.1 and older) also does not run Engine Fix's hook, which turns off its load/save-menu fix. A mod from another author that replaces `testtools.lua` would break the hotkeys; merge the two files by hand.
+- `System\Scripts\testtools.lua` is a shared loader. It is the only Lua file the game runs on startup that the retail release does not ship. [Witcher Quick Loot](https://github.com/MariusTBjercke/witcher-quick-loot) (1.0.2 or newer) and [Witcher Engine Fix](https://github.com/MariusTBjercke/witcher-enginefix) ship the identical file, so the mods can be installed in any order. Engine Fix is strongly recommended alongside this mod (see the Alt+Tab section above). Keep the newest one (loader version 3, Speed Toggle 1.2.2): version 2 does not rebind the hotkeys after a video mode change, and version 1 (Speed Toggle 1.2.0 and older, Quick Loot 1.0.1 and older) also does not run Engine Fix's hook, which turns off its load/save-menu fix. A mod from another author that replaces `testtools.lua` would break the hotkeys; merge the two files by hand.
 - Above roughly +50%, the running animation visibly speeds up as well.
 
 ## How it works
